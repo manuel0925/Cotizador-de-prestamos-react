@@ -1,24 +1,55 @@
-import logo from './logo.svg';
+import React,{Fragment,useState} from 'react'
 import './App.css';
+import Header from './components/Header'
+import Formulario from './components/Formulario'
+import Mensaje from './components/Mensaje';
+import Resultado from './components/Resultado';
+import Spinner from './components/Spinner';
 
 function App() {
+
+  const [cantidad,guardarCantidad] = useState(0);
+  const [plazo,guardadPlazo] = useState("");
+  const [total,guardadTotal] = useState(0);
+  const [cargando,guardadCargando] = useState(false);
+
+  let componente;
+  if(cargando){
+    componente = <Spinner/>
+  }else if (total === 0){
+    componente= <Mensaje/>
+  }else{
+    componente = <Resultado
+          total={total}
+          plazo={plazo}
+          cantidad={cantidad}  
+    />
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <Header
+        titulo="Cotizador de prestamos"
+        descripcion="Utiliza el formulario y obten una contizacion"
+      />
+
+      <div className="container">
+        <Formulario
+          cantidad={cantidad}
+          guardarCantidad={guardarCantidad}
+          plazo={plazo}
+          guardadPlazo={guardadPlazo}
+          total={total}
+          guardarTotal={guardadTotal}
+          guardadCargando={guardadCargando}
+        />
+
+        <div className="mensajes">
+          {componente}
+        </div>
+
+        {/* <p>Total a pagarl: $RD {total}</p> */}
+      </div>
+    </Fragment>
   );
 }
 
